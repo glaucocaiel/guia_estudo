@@ -1,5 +1,5 @@
 // NOVO: Adicione sua chave da API aqui dentro das aspas
-const BIBLE_API_KEY = '1923672613a8c972960e94458877a10992c070c22b7a01ce3d2b9a46e276ed01'; 
+const BIBLE_API_KEY = 'COLE_SUA_CHAVE_AQUI'; 
 
 // Guia Bíblico 40 Dias - Script Completo e Funcional com Status e Popup de Versículos
 const guia40Dias = [
@@ -80,51 +80,41 @@ document.addEventListener("DOMContentLoaded", () => {
     // --- 3. FUNÇÕES PRINCIPAIS E DO MODAL ---
     
     // NOVO: Função para buscar o texto na API pesquisarnabiblia.com.br
+    // ALTERADO: A função agora chama a nossa própria API segura no Netlify
     async function fetchBiblePassage(reference) {
-        modalContent.innerHTML = '<p>Buscando texto na Bíblia...</p>';
+    modalContent.innerHTML = '<p>Buscando texto na Bíblia...</p>';
 
-        if (!BIBLE_API_KEY || BIBLE_API_KEY === 'COLE_SUA_CHAVE_AQUI') {
-            modalContent.innerHTML = '<p><strong>Erro de Configuração:</strong> A chave da API não foi inserida no arquivo script.js.</p>';
-            return;
-        }
+    // A URL agora aponta para a nossa função que criamos
+    const apiUrl = '/.netlify/functions/bible';
 
-        const apiUrl = 'https://pesquisarnabiblia.com.br/api-projeto/public/bible/search';
-
-        const requestOptions = {
+    try {
+        const response = await fetch(apiUrl, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${BIBLE_API_KEY}`
-            },
-            body: JSON.stringify({
-                version: 'nvi',
-                search: reference
-            })
-        };
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ searchReference: reference }) // Envia a referência para a nossa função
+        });
+        
+        const result = await response.json();
 
-        try {
-            const response = await fetch(apiUrl, requestOptions);
-            const result = await response.json();
+        if (result && result.data && result.data.verses && result.data.verses.length > 0) {
+            const verses = result.data.verses;
+            const bookName = verses[0].book;
+            const chapter = verses[0].chapter;
 
-            if (result && result.data && result.data.verses && result.data.verses.length > 0) {
-                const verses = result.data.verses;
-                const bookName = verses[0].book;
-                const chapter = verses[0].chapter;
-
-                let versesHTML = `<h4>${bookName} - Capítulo ${chapter} (NVI)</h4>`;
-                verses.forEach(verse => {
-                    versesHTML += `<p><strong>${verse.number}</strong> ${verse.text}</p>`;
-                });
-                modalContent.innerHTML = versesHTML;
-            } else {
-                const errorMessage = result.data.msg || `A referência "${reference}" não foi encontrada.`;
-                modalContent.innerHTML = `<p><strong>Erro:</strong> ${errorMessage}</p>`;
-            }
-        } catch (error) {
-            console.error("Erro detalhado ao buscar versículo:", error);
-            modalContent.innerHTML = '<p>Desculpe, não foi possível carregar o texto bíblico. Verifique sua conexão ou se a chave da API é válida.</p>';
+            let versesHTML = `<h4>${bookName} - Capítulo ${chapter} (NVI)</h4>`;
+            verses.forEach(verse => {
+                versesHTML += `<p><strong>${verse.number}</strong> ${verse.text}</p>`;
+            });
+            modalContent.innerHTML = versesHTML;
+        } else {
+            const errorMessage = result.data ? result.data.msg : (result.error || `A referência "${reference}" não foi encontrada.`);
+            modalContent.innerHTML = `<p><strong>Erro:</strong> ${errorMessage}</p>`;
         }
+    } catch (error) {
+        console.error("Erro detalhado ao buscar versículo:", error);
+        modalContent.innerHTML = '<p>Desculpe, não foi possível carregar o texto bíblico. Ocorreu uma falha na comunicação.</p>';
     }
+}
     
     function renderSummary() {
         summaryGridContainer.innerHTML = "";

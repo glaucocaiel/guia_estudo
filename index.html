@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Templates para Livro Digital</title>
+    <title>Guia 40 Dias - Jornada Espiritual</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
 </head>
 <body>
+
     <header class="book-header">
         <div class="container">
             <div class="header-content">
-                <div class="logo">📖 GUIA 40 Dias</div>
+                <div class="logo">📖 Guia 40 Dias</div>
                 <div class="progress-header">
                     <div class="progress-bar">
                         <div class="progress-fill" id="header-progress-fill"></div>
@@ -22,69 +23,77 @@
                 </div>
                 <nav class="header-nav">
                     <a href="#" id="summary-nav-btn" class="nav-btn">Sumário</a>
-                    <a href="#" class="nav-btn">Meu Progresso</a>
+                    <a href="#" id="progress-nav-btn" class="nav-btn">Meu Progresso</a>
                 </nav>
             </div>
         </div>
     </header>
 
-    <div class="container" id="summary-view">
-        <section class="summary-grid" id="summary-grid-container">
-            </section>
+    <div class="view-container" id="summary-view">
+        <div class="container">
+             <section class="summary-grid" id="summary-grid-container"></section>
+        </div>
     </div>
 
-    <div class="chapter-container" id="chapter-view" style="display: none;"> <div class="chapter-header fade-in-up">
-            <div class="chapter-number" id="chapter-day-number">DIA 01</div>
-            <h1 class="chapter-title" id="chapter-day-title">Permanecendo em Cristo</h1>
-            <p class="chapter-subtitle" id="chapter-day-theme">A base de toda vida espiritual produtiva...</p>
-        </div>
+    <div class="view-container" id="chapter-view" style="display: none;">
+        <div class="chapter-container">
+            <div class="chapter-header fade-in-up">
+                <div class="chapter-number" id="chapter-day-number">DIA 01</div>
+                <h1 class="chapter-title" id="chapter-day-title">Permanecendo em Cristo</h1>
+                <p class="chapter-subtitle" id="chapter-day-theme">A base de toda vida espiritual produtiva.</p>
+            </div>
 
-        <div class="content-section main-reading fade-in-up">
-            <div class="section-header">📖 Leitura Principal</div>
-            <div class="section-content">
-                <div class="verse-reference" id="chapter-main-reading">João 15:1-11</div>
-            </div>
-        </div>
+            <main class="chapter-content">
+                <div class="content-section main-reading fade-in-up">
+                    <div class="section-header">📖 Leitura Principal</div>
+                    <div class="section-content">
+                        <div class="verse-reference" id="chapter-main-reading">João 15:1-11</div>
+                    </div>
+                </div>
 
-        <div class="content-section complementary-reading fade-in-up">
-            <div class="section-header">📚 Leituras Complementares</div>
-            <div class="section-content">
-                 <p id="chapter-comp-reading">Salmos 1:1-3; Jeremias 17:7-8; Colossenses 2:6-7</p>
-            </div>
-        </div>
+                <div class="content-section complementary-reading fade-in-up">
+                    <div class="section-header">📚 Leituras Complementares</div>
+                    <div class="section-content" id="chapter-comp-reading-container">
+                        <p id="chapter-comp-reading">Salmos 1:1-3; Jeremias 17:7-8; Colossenses 2:6-7</p>
+                    </div>
+                </div>
 
-        <div class="quote-card fade-in-up">
-            <div class="quote-content" id="chapter-comment">
-                Permanecer em Cristo é condição para vida espiritual produtiva...
-            </div>
-        </div>
-        
-        <div class="content-section reflection-section fade-in-up">
-            <div class="section-header">💭 Perguntas para Reflexão</div>
-            <div class="section-content">
-                <ul class="action-items" id="chapter-questions">
-                    </ul>
-            </div>
-        </div>
-        
-         <div class="content-section application-section fade-in-up">
-            <div class="section-header">🙏 Oração</div>
-            <div class="section-content">
-                <p id="chapter-prayer">Senhor Jesus, ensina-me a permanecer em Ti...</p>
-            </div>
-        </div>
+                <div class="quote-card fade-in-up">
+                    <div class="quote-icon">“</div>
+                    <div class="quote-content" id="chapter-comment">
+                        Permanecer em Cristo não é um esforço passivo, mas uma decisão diária de se conectar intencionalmente com Ele através da oração, da Sua Palavra e da obediência.
+                    </div>
+                </div>
+                
+                <div class="content-section reflection-section fade-in-up">
+                    <div class="section-header">✒️ Diário de Reflexão</div>
+                    <div class="section-content">
+                        <div class="reflection-container" id="chapter-questions"></div>
+                    </div>
+                </div>
+                
+                <div class="content-section application-section fade-in-up">
+                    <div class="section-header">🙏 Oração</div>
+                    <div class="section-content">
+                        <p id="chapter-prayer">Senhor Jesus, ensina-me a permanecer em Ti...</p>
+                    </div>
+                </div>
 
-        <nav class="chapter-navigation">
-            <a href="#" class="nav-button" id="prev-day-btn">← Dia Anterior</a>
-            <a href="#" class="nav-button summary" id="back-to-summary-btn">📖 Voltar ao Sumário</a>
-            <a href="#" class="nav-button" id="complete-day-btn" style="background: var(--success-color); border-color: var(--success-color); color: white;">✓ Marcar como Concluído</a>
-            <a href="#" class="nav-button" id="next-day-btn">Próximo Dia →</a>
-        </nav>
+                <div class="notes-section fade-in-up">
+                    <div class="notes-header">✒️ Minhas Anotações</div>
+                    <textarea id="notes-input" class="notes-input" placeholder="Escreva aqui suas reflexões, aprendizados e orações do dia..."></textarea>
+                    <button id="save-notes-btn" class="save-notes-btn">Salvar Anotações</button>
+                </div>
+            </main>
+
+            <nav class="chapter-navigation">
+                <a href="#" class="nav-button" id="prev-day-btn">← Dia Anterior</a>
+                <a href="#" class="nav-button summary" id="back-to-summary-btn">📖 Voltar ao Sumário</a>
+                <a href="#" class="nav-button complete" id="complete-day-btn">✓ Marcar como Concluído</a>
+                <a href="#" class="nav-button" id="next-day-btn">Próximo Dia →</a>
+            </nav>
+        </div>
     </div>
-
-    <script src="script.js"></script>
-
-    <script src="script.js"></script>
 
     <div id="bible-modal" class="modal-overlay" style="display: none;">
         <div class="modal-container">
@@ -97,6 +106,43 @@
             </div>
         </div>
     </div>
+
+    <div id="progress-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-container progress-modal-container">
+            <div class="modal-header">
+                <h3>Meu Progresso</h3>
+                <button id="progress-modal-close-btn" class="modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-content">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <h4>Dias Concluídos</h4>
+                        <p id="stats-completed">0/40</p>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Sequência Atual</h4>
+                        <p id="stats-streak">🔥 0 dias</p>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Progresso Total</h4>
+                        <p id="stats-percentage">0%</p>
+                    </div>
+                </div>
+
+                <div class="progress-grid-container">
+                    <h4>Sua Jornada de 40 Dias</h4>
+                    <div class="progress-grid" id="progress-grid">
+                        </div>
+                </div>
+
+                <div class="motivation-quote">
+                    <p id="progress-quote">"O segredo de progredir é começar."</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 
 </body>
 </html>

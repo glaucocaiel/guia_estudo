@@ -726,3 +726,52 @@ body {
     max-height: 500px; 
     padding-bottom: 10px;
 }
+
+/* ======================================= */
+/* NOVO: ESTILOS DO BOTÃO E MODAL DE COMENTÁRIO */
+/* ======================================= */
+
+.comment-action {
+    margin-top: 25px;
+    text-align: right;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.action-btn {
+    background-color: var(--accent-color);
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
+    padding: 12px 24px;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    background-color: #b8960b; /* Um tom de dourado mais escuro */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Ajustes no Modal para o Iframe */
+.commentary-modal-container {
+    width: 90%;
+    max-width: 1100px;
+    height: 90vh; /* Ocupa 90% da altura da tela */
+}
+
+.modal-content-iframe {
+    padding: 0;
+    overflow: hidden; /* Remove o padding e a rolagem */
+    flex-grow: 1; /* Faz o conteúdo ocupar todo o espaço vertical disponível */
+}
+
+#commentary-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}

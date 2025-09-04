@@ -61,7 +61,10 @@
                 <div class="quote-card fade-in-up">
                     <div class="quote-icon">“</div>
                     <div class="quote-content" id="chapter-comment">
-                        Permanecer em Cristo não é um esforço passivo, mas uma decisão diária de se conectar intencionalmente com Ele através da oração, da Sua Palavra e da obediência.
+                        Permanecer em Cristo não é um esforço passivo...
+                    </div>
+                    <div class="comment-action">
+                        <button id="open-comment-btn" class="action-btn">Ler Comentário do Tema</button>
                     </div>
                 </div>
                 
@@ -142,6 +145,18 @@
         </div>
     </div>
 
+    <div id="commentary-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-container commentary-modal-container">
+            <div class="modal-header">
+                <h3>Comentário do Tema</h3>
+                <button id="commentary-modal-close-btn" class="modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-content modal-content-iframe">
+                <iframe id="commentary-iframe" src="" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
+    
     <script src="script.js"></script>
 
 </body>

@@ -1,9 +1,10 @@
 // SCRIPT.JS - VERSÃO FINAL (4 de Setembro, 2025)
-// Lógica de busca de versículos 100% ajustada para a estrutura de dados do projeto.
+// Lógica de mapeamento de livros corrigida para ser compatível com GitHub Pages.
 
 document.addEventListener("DOMContentLoaded", () => {
     // --- 1. DADOS DA APLICAÇÃO ---
     const guia40Dias = [
+        // ... (seus dados dos 40 dias permanecem aqui, sem alterações)
         {
             titulo: "Dia 1 — Conectado à Videira Verdadeira",
             tema: "A base de toda vida espiritual produtiva.",
@@ -25,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
     for (let i = guia40Dias.length; i < 40; i++) {
-        guia40Dias.push({ ...guia40Dias[1], titulo: `Dia ${i + 1} — Título de Exemplo`, leituraPrincipal: `Gênesis ${i - 1}:1-5` });
+        guia40Dias.push({ ...guia40Dias[1], titulo: `Dia ${i + 1} — Título de Exemplo`, leituraPrincipal: `Gênesis ${i - 1}:5-10` });
     }
 
     // --- 2. VARIÁVEIS GLOBAIS ---
@@ -36,23 +37,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- 3. SELEÇÃO DE ELEMENTOS DO DOM ---
     const summaryView=document.getElementById("summary-view"),chapterView=document.getElementById("chapter-view"),summaryGridContainer=document.getElementById("summary-grid-container"),headerProgressFill=document.getElementById("header-progress-fill"),headerProgressText=document.getElementById("header-progress-text"),chapterQuestions=document.getElementById("chapter-questions"),notesInput=document.getElementById("notes-input"),saveNotesBtn=document.getElementById("save-notes-btn"),chapterDayNumber=document.getElementById("chapter-day-number"),chapterDayTitle=document.getElementById("chapter-day-title"),chapterDayTheme=document.getElementById("chapter-day-theme"),chapterMainReading=document.getElementById("chapter-main-reading"),chapterCompReading=document.getElementById("chapter-comp-reading"),chapterComment=document.getElementById("chapter-comment"),chapterPrayer=document.getElementById("chapter-prayer"),prevDayBtn=document.getElementById("prev-day-btn"),nextDayBtn=document.getElementById("next-day-btn"),backToSummaryBtn=document.getElementById("back-to-summary-btn"),summaryNavBtn=document.getElementById("summary-nav-btn"),completeDayBtn=document.getElementById("complete-day-btn"),progressNavBtn=document.getElementById("progress-nav-btn"),bibleModal=document.getElementById("bible-modal"),modalTitle=document.getElementById("modal-title"),modalContent=document.getElementById("modal-content"),modalCloseBtn=document.getElementById("modal-close-btn"),progressModal=document.getElementById("progress-modal"),progressModalCloseBtn=document.getElementById("progress-modal-close-btn"),statsCompleted=document.getElementById("stats-completed"),statsStreak=document.getElementById("stats-streak"),statsPercentage=document.getElementById("stats-percentage"),progressGrid=document.getElementById("progress-grid"),progressQuote=document.getElementById("progress-quote");
-
+    
     // --- 4. FUNÇÕES ---
-    const bookNormalizationMap = {
-        "genesis": "Gênesis", "exodo": "Êxodo", "levitico": "Levítico", "numeros": "Números", "deuteronomio": "Deuteronômio",
-        "josue": "Josué", "juizes": "Juízes", "rute": "Rute", "i samuel": "I Samuel", "ii samuel": "II Samuel", "i reis": "I Reis", "ii reis": "II Reis",
-        "i cronicas": "I Crônicas", "ii cronicas": "II Crônicas", "esdras": "Esdras", "neemias": "Neemias", "ester": "Ester", "jo": "Jó",
-        "salmos": "Salmos", "proverbios": "Provérbios", "eclesiastes": "Eclesiastes", "cantares de salomao": "Cantares de Salomão", "isaias": "Isaías", "jeremias": "Jeremias",
-        "lamentacoes de jeremias": "Lamentações de Jeremias", "ezequiel": "Ezequiel", "daniel": "Daniel", "oseias": "Oseias", "joel": "Joel", "amos": "Amós",
-        "obadias": "Obadias", "jonas": "Jonas", "miqueias": "Miqueias", "naum": "Naum", "habacuque": "Habacuque", "sofonias": "Sofonias", "ageu": "Ageu",
-        "zacarias": "Zacarias", "malaquias": "Malaquias", "mateus": "Mateus", "marcos": "Marcos", "lucas": "Lucas", "joao": "João",
-        "atos": "Atos", "romanos": "Romanos", "i corintios": "I Coríntios", "ii corintios": "II Coríntios", "galatas": "Gálatas", "efesios": "Efésios",
-        "filipenses": "Filipenses", "colossenses": "Colossenses", "i tessalonicenses": "I Tessalonicenses", "ii tessalonicenses": "II Tessalonicenses",
-        "i timoteo": "I Timóteo", "ii timoteo": "II Timóteo", "tito": "Tito", "filemom": "Filemom", "hebreus": "Hebreus", "tiago": "Tiago",
-        "i pedro": "I Pedro", "ii pedro": "II Pedro", "i joao": "I João", "ii joao": "II João", "iii joao": "III João", "judas": "Judas", "apocalipse": "Apocalipse"
-    };
 
-    // ▼▼▼ FUNÇÃO DA BÍBLIA 100% CORRIGIDA PARA A SUA ESTRUTURA DE DADOS ▼▼▼
+    // ▼▼▼ FUNÇÃO DA BÍBLIA COM LÓGICA DE MAPEAMENTO CORRIGIDA ▼▼▼
     async function fetchBiblePassage(reference) {
         modalContent.innerHTML = '<p>Carregando texto...</p>';
 
@@ -67,28 +55,46 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        const referenceRegex = /^((\d\s|i\s|ii\s|iii\s)?[a-zA-ZÀ-ú]+)\s+(\d+):?(\d+)?(?:-(\d+))?$/i;
+        // Mapeamento de nomes de livros para o formato exato em biblia.json
+        // Este mapa é a "chave" para a tradução correta.
+        const bookNameMap = {
+            'gênesis': 'Gênesis', 'êxodo': 'Êxodo', 'levítico': 'Levítico', 'números': 'Números', 'deuteronômio': 'Deuteronômio',
+            'josué': 'Josué', 'juízes': 'Juízes', 'rute': 'Rute', 'i samuel': 'I Samuel', 'ii samuel': 'II Samuel', 'i reis': 'I Reis', 'ii reis': 'II Reis',
+            'i crônicas': 'I Crônicas', 'ii crônicas': 'II Crônicas', 'esdras': 'Esdras', 'neemias': 'Neemias', 'ester': 'Ester', 'jó': 'Jó',
+            'salmos': 'Salmos', 'provérbios': 'Provérbios', 'eclesiastes': 'Eclesiastes', 'cantares de salomão': 'Cantares de Salomão',
+            'isaías': 'Isaías', 'jeremias': 'Jeremias', 'lamentações de jeremias': 'Lamentações de Jeremias', 'ezequiel': 'Ezequiel',
+            'daniel': 'Daniel', 'oseias': 'Oseias', 'joel': 'Joel', 'amós': 'Amós', 'obadias': 'Obadias', 'jonas': 'Jonas',
+            'miqueias': 'Miqueias', 'naum': 'Naum', 'habacuque': 'Habacuque', 'sofonias': 'Sofonias', 'ageu': 'Ageu',
+            'zacarias': 'Zacarias', 'malaquias': 'Malaquias', 'mateus': 'Mateus', 'marcos': 'Marcos', 'lucas': 'Lucas', 'joão': 'João',
+            'atos': 'Atos', 'romanos': 'Romanos', 'i coríntios': 'I Coríntios', 'ii coríntios': 'II Coríntios', 'gálatas': 'Gálatas',
+            'efésios': 'Efésios', 'filipenses': 'Filipenses', 'colossenses': 'Colossenses', 'i tessalonicenses': 'I Tessalonicenses',
+            'ii tessalonicenses': 'II Tessalonicenses', 'i timóteo': 'I Timóteo', 'ii timóteo': 'II Timóteo', 'tito': 'Tito',
+            'filemom': 'Filemom', 'hebreus': 'Hebreus', 'tiago': 'Tiago', 'i pedro': 'I Pedro', 'ii pedro': 'II Pedro',
+            'i joão': 'I João', 'ii joão': 'II João', 'iii joão': 'III João', 'judas': 'Judas', 'apocalipse': 'Apocalipse'
+        };
+
+        const referenceRegex = /^((\d\s|i\s|ii\s|iii\s)?[a-zA-ZÀ-ú\s]+)\s+(\d+):?(\d+)?(?:-(\d+))?$/i;
         const match = reference.trim().match(referenceRegex);
 
         if (!match) {
             modalContent.innerHTML = `<p>Formato de referência inválido: "${reference}"</p>`;
             return;
         }
-        
-        const bookNameInput = match[1].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+        const bookNameInput = match[1].trim().toLowerCase();
         const chapterNum = parseInt(match[3], 10);
         const startVerse = match[4] ? parseInt(match[4], 10) : null;
         const endVerse = match[5] ? parseInt(match[5], 10) : (startVerse ? startVerse : null);
-        
-        const normalizedBookName = bookNormalizationMap[bookNameInput];
-        if (!normalizedBookName) {
+
+        const officialBookName = bookNameMap[bookNameInput];
+        if (!officialBookName) {
             modalContent.innerHTML = `<p>O livro "${bookNameInput}" não foi encontrado. Verifique a ortografia.</p>`;
             return;
         }
 
-        const bookId = Object.keys(bibliaIndex).find(key => bibliaIndex[key] === normalizedBookName);
+        const bookId = Object.keys(bibliaIndex).find(key => bibliaIndex[key] === officialBookName);
         if (!bookId) {
-            modalContent.innerHTML = `<p>Livro "${normalizedBookName}" não encontrado no arquivo de índice.</p>`;
+            modalContent.innerHTML = `<p>Livro "${officialBookName}" não encontrado no arquivo de índice.</p>`;
             return;
         }
         
@@ -97,14 +103,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
             const response = await fetch(filename);
-            if (!response.ok) throw new Error(`Arquivo do capítulo não encontrado: ${filename}`);
+            if (!response.ok) {
+                console.error(`Falha ao carregar: ${filename}. Status: ${response.status}`);
+                throw new Error(`Arquivo do capítulo não encontrado no servidor.`);
+            }
             
             const chapterData = await response.json();
-
-            // AJUSTE 1: Acessamos o array de versículos DENTRO do objeto retornado
             const versesArray = chapterData.verses;
 
-            // AJUSTE 2: A lógica de filtragem agora pega a CHAVE de cada objeto no array
             const versesToDisplay = versesArray.filter(verseObject => {
                 const verseNum = parseInt(Object.keys(verseObject)[0], 10);
                 if (!startVerse) return true;
@@ -116,22 +122,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
             
-            // AJUSTE 3: A criação do HTML agora pega a chave (número) e o valor (texto)
             const versesHtml = versesToDisplay.map(verseObject => {
                 const verseNum = Object.keys(verseObject)[0];
-                const verseText = verseObject[verseNum]; // Pega o valor usando a chave
+                const verseText = verseObject[verseNum];
                 return `<p><strong>${verseNum}</strong> ${verseText}</p>`;
             }).join('');
             
-            modalTitle.textContent = `${normalizedBookName} ${chapterNum}`;
+            modalTitle.textContent = `${officialBookName} ${chapterNum}`;
             modalContent.innerHTML = versesHtml;
 
         } catch (error) {
             modalContent.innerHTML = `<p style="color: red;">${error.message}</p>`;
         }
     }
-    // ▲▲▲ FIM DA FUNÇÃO DA BÍBLIA CORRIGIDA ▲▲▲
-
+    
+    // (O restante do script, funções e event listeners, permanece o mesmo)
     function loadData(){const savedProgress=localStorage.getItem("guia40DiasProgress");progressStatus=savedProgress?JSON.parse(savedProgress):Array(guia40Dias.length).fill("not-started");const savedNotes=localStorage.getItem("guia40DiasNotes");notesData=savedNotes?JSON.parse(savedNotes):{}}
     function saveProgress(){localStorage.setItem("guia40DiasProgress",JSON.stringify(progressStatus))}
     function saveNotesForCurrentDay(){if(!notesData[currentPageIndex]){notesData[currentPageIndex]={}}

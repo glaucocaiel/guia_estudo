@@ -1,10 +1,9 @@
 // SCRIPT.JS - VERSÃO FINAL (4 de Setembro, 2025)
-// Lógica atualizada para ler arquivos de capítulo individuais da pasta /biblia.
+// Lógica de busca de versículos 100% ajustada para a estrutura de dados do projeto.
 
 document.addEventListener("DOMContentLoaded", () => {
     // --- 1. DADOS DA APLICAÇÃO ---
     const guia40Dias = [
-        // ... (seus dados dos 40 dias permanecem aqui, sem alterações)
         {
             titulo: "Dia 1 — Conectado à Videira Verdadeira",
             tema: "A base de toda vida espiritual produtiva.",
@@ -33,14 +32,12 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentPageIndex = 0;
     let progressStatus = [];
     let notesData = {};
-    let bibliaIndex = null; // Armazenará o índice de livros (biblia.json)
+    let bibliaIndex = null;
 
     // --- 3. SELEÇÃO DE ELEMENTOS DO DOM ---
     const summaryView=document.getElementById("summary-view"),chapterView=document.getElementById("chapter-view"),summaryGridContainer=document.getElementById("summary-grid-container"),headerProgressFill=document.getElementById("header-progress-fill"),headerProgressText=document.getElementById("header-progress-text"),chapterQuestions=document.getElementById("chapter-questions"),notesInput=document.getElementById("notes-input"),saveNotesBtn=document.getElementById("save-notes-btn"),chapterDayNumber=document.getElementById("chapter-day-number"),chapterDayTitle=document.getElementById("chapter-day-title"),chapterDayTheme=document.getElementById("chapter-day-theme"),chapterMainReading=document.getElementById("chapter-main-reading"),chapterCompReading=document.getElementById("chapter-comp-reading"),chapterComment=document.getElementById("chapter-comment"),chapterPrayer=document.getElementById("chapter-prayer"),prevDayBtn=document.getElementById("prev-day-btn"),nextDayBtn=document.getElementById("next-day-btn"),backToSummaryBtn=document.getElementById("back-to-summary-btn"),summaryNavBtn=document.getElementById("summary-nav-btn"),completeDayBtn=document.getElementById("complete-day-btn"),progressNavBtn=document.getElementById("progress-nav-btn"),bibleModal=document.getElementById("bible-modal"),modalTitle=document.getElementById("modal-title"),modalContent=document.getElementById("modal-content"),modalCloseBtn=document.getElementById("modal-close-btn"),progressModal=document.getElementById("progress-modal"),progressModalCloseBtn=document.getElementById("progress-modal-close-btn"),statsCompleted=document.getElementById("stats-completed"),statsStreak=document.getElementById("stats-streak"),statsPercentage=document.getElementById("stats-percentage"),progressGrid=document.getElementById("progress-grid"),progressQuote=document.getElementById("progress-quote");
 
     // --- 4. FUNÇÕES ---
-
-    // Mapa de normalização ATUALIZADO para corresponder ao seu biblia.json (com numerais romanos)
     const bookNormalizationMap = {
         "genesis": "Gênesis", "exodo": "Êxodo", "levitico": "Levítico", "numeros": "Números", "deuteronomio": "Deuteronômio",
         "josue": "Josué", "juizes": "Juízes", "rute": "Rute", "i samuel": "I Samuel", "ii samuel": "II Samuel", "i reis": "I Reis", "ii reis": "II Reis",
@@ -55,11 +52,10 @@ document.addEventListener("DOMContentLoaded", () => {
         "i pedro": "I Pedro", "ii pedro": "II Pedro", "i joao": "I João", "ii joao": "II João", "iii joao": "III João", "judas": "Judas", "apocalipse": "Apocalipse"
     };
 
-    // ▼▼▼ FUNÇÃO DA BÍBLIA TOTALMENTE REESCRITA PARA SUA ESTRUTURA DE ARQUIVOS ▼▼▼
+    // ▼▼▼ FUNÇÃO DA BÍBLIA 100% CORRIGIDA PARA A SUA ESTRUTURA DE DADOS ▼▼▼
     async function fetchBiblePassage(reference) {
         modalContent.innerHTML = '<p>Carregando texto...</p>';
 
-        // Passo 1: Carrega o arquivo de índice (biblia.json) se ainda não foi carregado.
         if (!bibliaIndex) {
             try {
                 const response = await fetch('biblia/biblia.json');
@@ -71,7 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        // Passo 2: Analisa a referência do usuário (ex: "I João 5:1-4").
         const referenceRegex = /^((\d\s|i\s|ii\s|iii\s)?[a-zA-ZÀ-ú]+)\s+(\d+):?(\d+)?(?:-(\d+))?$/i;
         const match = reference.trim().match(referenceRegex);
 
@@ -91,27 +86,29 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // Passo 3: Encontra o ID do livro no índice.
         const bookId = Object.keys(bibliaIndex).find(key => bibliaIndex[key] === normalizedBookName);
         if (!bookId) {
             modalContent.innerHTML = `<p>Livro "${normalizedBookName}" não encontrado no arquivo de índice.</p>`;
             return;
         }
         
-        // Passo 4: Determina o testamento e constrói o nome do arquivo do capítulo.
         const testament = parseInt(bookId) <= 27 ? 'nt' : 'at';
         const filename = `biblia/${testament}_book-${bookId}_chapter-${chapterNum}.json`;
 
-        // Passo 5: Carrega o arquivo do capítulo específico.
         try {
             const response = await fetch(filename);
             if (!response.ok) throw new Error(`Arquivo do capítulo não encontrado: ${filename}`);
+            
             const chapterData = await response.json();
 
-            // Passo 6: Filtra e exibe os versículos.
-            const versesToDisplay = chapterData.verses.filter(verse => {
-                if (!startVerse) return true; // Mostra o capítulo inteiro
-                return verse.number >= startVerse && verse.number <= endVerse;
+            // AJUSTE 1: Acessamos o array de versículos DENTRO do objeto retornado
+            const versesArray = chapterData.verses;
+
+            // AJUSTE 2: A lógica de filtragem agora pega a CHAVE de cada objeto no array
+            const versesToDisplay = versesArray.filter(verseObject => {
+                const verseNum = parseInt(Object.keys(verseObject)[0], 10);
+                if (!startVerse) return true;
+                return verseNum >= startVerse && verseNum <= endVerse;
             });
 
             if (versesToDisplay.length === 0) {
@@ -119,7 +116,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
             
-            const versesHtml = versesToDisplay.map(v => `<p><strong>${v.number}</strong> ${v.text}</p>`).join('');
+            // AJUSTE 3: A criação do HTML agora pega a chave (número) e o valor (texto)
+            const versesHtml = versesToDisplay.map(verseObject => {
+                const verseNum = Object.keys(verseObject)[0];
+                const verseText = verseObject[verseNum]; // Pega o valor usando a chave
+                return `<p><strong>${verseNum}</strong> ${verseText}</p>`;
+            }).join('');
+            
             modalTitle.textContent = `${normalizedBookName} ${chapterNum}`;
             modalContent.innerHTML = versesHtml;
 
@@ -127,9 +130,8 @@ document.addEventListener("DOMContentLoaded", () => {
             modalContent.innerHTML = `<p style="color: red;">${error.message}</p>`;
         }
     }
-    // ▲▲▲ FIM DA FUNÇÃO DA BÍBLIA ATUALIZADA ▲▲▲
+    // ▲▲▲ FIM DA FUNÇÃO DA BÍBLIA CORRIGIDA ▲▲▲
 
-    // (O restante do script, funções e event listeners, permanece o mesmo)
     function loadData(){const savedProgress=localStorage.getItem("guia40DiasProgress");progressStatus=savedProgress?JSON.parse(savedProgress):Array(guia40Dias.length).fill("not-started");const savedNotes=localStorage.getItem("guia40DiasNotes");notesData=savedNotes?JSON.parse(savedNotes):{}}
     function saveProgress(){localStorage.setItem("guia40DiasProgress",JSON.stringify(progressStatus))}
     function saveNotesForCurrentDay(){if(!notesData[currentPageIndex]){notesData[currentPageIndex]={}}
